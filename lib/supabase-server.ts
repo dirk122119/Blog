@@ -19,7 +19,38 @@ export const supabaseServer = createClient(supabaseUrl, supabaseKey, {
   },
 });
 
-// 文章 metadata 類型
+// 支援的語系
+export type Locale = "zh-TW" | "en";
+
+// 文章基本資料（語言中立）
+export interface Post {
+  id: string;
+  slug: string;
+  published_at: string;
+  created_at: string;
+  updated_at: string;
+  author?: string;
+  tags?: string[];
+}
+
+// 文章翻譯資料（語言特定）
+export interface PostTranslation {
+  id: string;
+  post_id: string;
+  locale: Locale;
+  title: string;
+  description?: string;
+  markdown_path: string;
+  created_at: string;
+  updated_at: string;
+}
+
+// 完整文章資料（包含翻譯）
+export interface PostWithTranslation extends Post {
+  translation: PostTranslation;
+}
+
+// 舊的介面保留（為了向後相容）
 export interface PostMetadata {
   id: string;
   slug: string;
@@ -28,8 +59,9 @@ export interface PostMetadata {
   published_at: string;
   created_at: string;
   updated_at: string;
-  markdown_path: string; // Object Storage 中的路徑
+  markdown_path: string;
   tags?: string[];
   author?: string;
+  locale?: Locale;
 }
 

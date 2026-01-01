@@ -9,7 +9,7 @@ import "highlight.js/styles/github-dark.css";
 interface MarkdownContentProps {
   content: string;
 }
-
+// TODO: 測試code block & highlight
 export default function MarkdownContent({ content }: MarkdownContentProps) {
   return (
     <ReactMarkdown

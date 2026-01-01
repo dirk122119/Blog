@@ -1,8 +1,8 @@
-import { supabase, type PostMetadata } from "./supabase";
+import { supabaseServer, type PostMetadata } from "./supabase-server";
 
 // 獲取所有文章 metadata
 export async function getAllPosts(): Promise<PostMetadata[]> {
-  const { data, error } = await supabase
+  const { data, error } = await supabaseServer
     .from("posts")
     .select("*")
     .order("published_at", { ascending: false });
@@ -16,7 +16,7 @@ export async function getAllPosts(): Promise<PostMetadata[]> {
 
 // 根據 slug 獲取單篇文章 metadata
 export async function getPostBySlug(slug: string): Promise<PostMetadata | null> {
-  const { data, error } = await supabase
+  const { data, error } = await supabaseServer
     .from("posts")
     .select("*")
     .eq("slug", slug)
@@ -34,7 +34,7 @@ export async function getPostBySlug(slug: string): Promise<PostMetadata | null> 
 
 // 從 Supabase Object Storage 獲取 markdown 內容
 export async function getMarkdownContent(path: string): Promise<string> {
-  const { data, error } = await supabase.storage
+  const { data, error } = await supabaseServer.storage
     .from("blog-posts") // bucket 名稱
     .download(path);
 

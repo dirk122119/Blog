@@ -16,9 +16,16 @@
 ### 環境變數
 建立 `.env.local` 檔案並填入：
 ```
-NEXT_PUBLIC_SUPABASE_URL=your_supabase_project_url
-NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+# Server-only 環境變數（不會暴露到客戶端）
+SUPABASE_URL=your_supabase_project_url
+SUPABASE_ANON_KEY=your_supabase_anon_key
+
+# 可選：使用 service role key（有完整權限，僅在 server-side 使用）
+# 如果使用 service role key，會繞過 RLS，適合 SSG/ISR
+# SUPABASE_SERVICE_ROLE_KEY=your_service_role_key
 ```
+
+**安全性說明**：使用不帶 `NEXT_PUBLIC_` 前綴的環境變數，這些變數只在 server-side（build time / request time）可用，不會被打包到客戶端。詳見 `SECURITY.md`。
 
 ## 2. 資料表結構
 

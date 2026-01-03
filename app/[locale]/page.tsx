@@ -26,8 +26,8 @@ export async function generateMetadata({
   const t = getTranslation(locale);
 
   return {
-    title: t.blog,
-    description: t.blog,
+    title: t.posts,
+    description: t.posts,
   };
 }
 
@@ -63,7 +63,7 @@ export default async function Home({
         </div>
 
         <h1 className="mb-12 text-4xl font-bold text-black dark:text-zinc-50">
-          {t.blog}
+          {t.posts}
         </h1>
         <div className="space-y-8">
           {posts.length === 0 ? (

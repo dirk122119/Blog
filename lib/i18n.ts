@@ -16,7 +16,7 @@ export const localeNames: Record<Locale, string> = {
 // UI 翻譯
 export const translations = {
   "zh-TW": {
-    blog: "部落格",
+    posts: "文章",
     noArticles: "尚無文章",
     author: "作者",
     notFound: "找不到這個頁面",
@@ -25,7 +25,7 @@ export const translations = {
     readIn: "閱讀",
   },
   en: {
-    blog: "Blog",
+    posts: "Posts",
     noArticles: "No articles yet",
     author: "Author",
     notFound: "Page not found",

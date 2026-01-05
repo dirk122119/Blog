@@ -1,4 +1,4 @@
-import type { Locale } from "./supabase-server";
+import type { Locale } from "./supabase/supabase-server";
 
 export const locales: Locale[] = ["zh-TW", "en"];
 export const defaultLocale: Locale = "zh-TW";

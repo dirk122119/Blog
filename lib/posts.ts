@@ -3,7 +3,7 @@ import {
   type PostMetadata,
   type PostWithTranslation,
   type Locale,
-} from "./supabase-server";
+} from "./supabase/supabase-server";
 
 // 獲取所有文章（指定語言）
 export async function getAllPosts(locale: Locale = "zh-TW"): Promise<PostMetadata[]> {

@@ -4,74 +4,77 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import rehypeHighlight from "rehype-highlight";
 import rehypeRaw from "rehype-raw";
-import "highlight.js/styles/github-dark.css";
+import "highlight.js/styles/github-dark.css"; 
 
 interface MarkdownContentProps {
   content: string;
 }
-// TODO: 測試code block & highlight
+
 export default function MarkdownContent({ content }: MarkdownContentProps) {
   return (
-    <ReactMarkdown
-      remarkPlugins={[remarkGfm]}
-      rehypePlugins={[rehypeHighlight, rehypeRaw]}
-      components={{
-        // 自訂樣式
-        h1: ({ node, ...props }) => (
-          <h1 className="mb-4 mt-8 text-3xl font-bold" {...props} />
-        ),
-        h2: ({ node, ...props }) => (
-          <h2 className="mb-3 mt-6 text-2xl font-semibold" {...props} />
-        ),
-        h3: ({ node, ...props }) => (
-          <h3 className="mb-2 mt-4 text-xl font-semibold" {...props} />
-        ),
-        p: ({ node, ...props }) => (
-          <p className="mb-4 leading-7" {...props} />
-        ),
-        code: ({ node, className, children, ...props }: any) => {
-          const isInline = !className;
-          return isInline ? (
-            <code
-              className="rounded bg-zinc-100 px-1.5 py-0.5 text-sm dark:bg-zinc-800"
+    <div className="max-w-none">
+      <ReactMarkdown
+        remarkPlugins={[remarkGfm]}
+        rehypePlugins={[rehypeHighlight, rehypeRaw]}
+        components={{
+          h1: ({ node, ...props }) => (
+            <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl mb-8" {...props} />
+          ),
+          h2: ({ node, ...props }) => (
+            <h2 className="scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight transition-colors first:mt-0 mt-12 mb-6" {...props} />
+          ),
+          h3: ({ node, ...props }) => (
+            <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight mt-8 mb-4" {...props} />
+          ),
+          p: ({ node, ...props }) => (
+            <p className="leading-7 [&:not(:first-child)]:mt-6" {...props} />
+          ),
+          ul: ({ node, ...props }) => (
+            <ul className="my-6 ml-6 list-disc [&>li]:mt-2" {...props} />
+          ),
+          ol: ({ node, ...props }) => (
+            <ol className="my-6 ml-6 list-decimal [&>li]:mt-2" {...props} />
+          ),
+          li: ({ node, ...props }) => (
+            <li className="leading-7" {...props} />
+          ),
+          blockquote: ({ node, ...props }) => (
+            <blockquote className="mt-6 border-l-2 pl-6 italic text-muted-foreground" {...props} />
+          ),
+          code: ({ node, className, children, ...props }: any) => {
+            const isInline = !className;
+            return isInline ? (
+              <code
+                className="relative rounded bg-muted px-[0.3rem] py-[0.2rem] font-mono text-sm font-semibold"
+                {...props}
+              >
+                {children}
+              </code>
+            ) : (
+              <pre className="mb-4 mt-6 overflow-x-auto rounded-lg border bg-muted/50 p-4">
+                <code className={className} {...props}>
+                  {children}
+                </code>
+              </pre>
+            );
+          },
+          a: ({ node, ...props }) => (
+            <a
+              className="font-medium underline underline-offset-4 hover:text-primary transition-colors"
               {...props}
-            >
-              {children}
-            </code>
-          ) : (
-            <code className={className} {...props}>
-              {children}
-            </code>
-          );
-        },
-        pre: ({ node, ...props }) => (
-          <pre
-            className="mb-4 overflow-x-auto rounded-lg bg-zinc-900 p-4"
-            {...props}
-          />
-        ),
-        a: ({ node, ...props }) => (
-          <a
-            className="text-blue-600 underline hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300"
-            {...props}
-          />
-        ),
-        ul: ({ node, ...props }) => (
-          <ul className="mb-4 ml-6 list-disc" {...props} />
-        ),
-        ol: ({ node, ...props }) => (
-          <ol className="mb-4 ml-6 list-decimal" {...props} />
-        ),
-        blockquote: ({ node, ...props }) => (
-          <blockquote
-            className="mb-4 border-l-4 border-zinc-300 pl-4 italic text-zinc-700 dark:border-zinc-600 dark:text-zinc-300"
-            {...props}
-          />
-        ),
-      }}
-    >
-      {content}
-    </ReactMarkdown>
+            />
+          ),
+          hr: ({ node, ...props }) => (
+            <hr className="my-12 border-border" {...props} />
+          ),
+          img: ({ node, ...props }) => (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img className="rounded-md border border-border my-8 w-full object-cover shadow-sm" {...props} alt={props.alt || ''} />
+          ),
+        }}
+      >
+        {content}
+      </ReactMarkdown>
+    </div>
   );
 }
-

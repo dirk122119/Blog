@@ -1,6 +1,17 @@
 import { createServerClient } from '@supabase/ssr'
 import { cookies } from 'next/headers'
 
+/**
+ * Server client for Server Components with request context.
+ * Use this in Server Components that need authentication/session handling.
+ * Requires request context (cookies), so cannot be used in generateStaticParams.
+ * 
+ * @example
+ * export default async function Page() {
+ *   const supabase = await createClient()
+ *   const { data: { user } } = await supabase.auth.getUser()
+ * }
+ */
 export async function createClient() {
   const cookieStore = await cookies()
 

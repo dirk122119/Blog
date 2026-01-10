@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { createClient } from "@/lib/supabase/supabase-client";
+import { createClient } from "@/lib/supabase/supabase-build";
 import { format } from "date-fns";
 
 export const dynamic = "force-static";

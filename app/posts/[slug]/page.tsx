@@ -1,4 +1,4 @@
-import { createClient } from "@/lib/supabase/supabase-client";
+import { createClient } from "@/lib/supabase/supabase-build";
 import { notFound } from "next/navigation";
 import MarkdownContent from "@/components/MarkdownContent";
 import { format } from "date-fns";

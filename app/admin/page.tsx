@@ -35,7 +35,15 @@ export default async function AdminPage() {
 
       <main className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
         <div className="rounded-lg bg-white p-6 shadow">
-          <h2 className="text-2xl font-bold mb-4">歡迎，{user.email}</h2>
+          <div className="flex justify-between items-center mb-4">
+            <h2 className="text-2xl font-bold">歡迎，{user.email}</h2>
+            <a
+              href="/admin/write"
+              className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
+            >
+              寫新文章
+            </a>
+          </div>
           <div className="space-y-4">
             <div className="rounded-lg border p-4">
               <h3 className="font-semibold mb-2">用戶資訊</h3>

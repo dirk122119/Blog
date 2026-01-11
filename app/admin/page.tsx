@@ -1,6 +1,8 @@
 import { createClient } from "@/lib/supabase/supabase-server";
 import { redirect } from "next/navigation";
+import { LogoutButton } from "@/components/ui/LogoutButton";
 
+export const dynamic = 'force-dynamic';
 export default async function AdminPage() {
   const supabase = await createClient();
 
@@ -22,12 +24,7 @@ export default async function AdminPage() {
             </div>
             <div className="flex items-center gap-4">
               <span className="text-sm text-gray-600">{user.email}</span>
-              <a
-                href="/api/auth/logout"
-                className="rounded-lg bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-red-700"
-              >
-                登出
-              </a>
+              <LogoutButton />
             </div>
           </div>
         </div>

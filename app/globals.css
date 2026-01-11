@@ -33,78 +33,79 @@
   --color-input: var(--input);
   --color-ring: var(--ring);
 
-  --font-sans: var(--font-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-jakarta), var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+  
+  --radius-xl: 0.75rem;
+  --radius-lg: 0.5rem;
+  --radius-md: calc(0.5rem - 2px);
+  --radius-sm: calc(0.5rem - 4px);
 
-  --radius-lg: var(--radius);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-sm: calc(var(--radius) - 4px);
+  --shadow-corporate: 0 4px 20px -2px rgba(79, 70, 229, 0.1);
+  --shadow-corporate-hover: 0 10px 25px -5px rgba(79, 70, 229, 0.15), 0 8px 10px -6px rgba(79, 70, 229, 0.1);
+  --shadow-button: 0 4px 14px 0 rgba(79, 70, 229, 0.3);
 
   --animate-accordion-down: accordion-down 0.2s ease-out;
   --animate-accordion-up: accordion-up 0.2s ease-out;
+  --animate-float: float 6s ease-in-out infinite;
 
   @keyframes accordion-down {
-    from {
-      height: 0;
-    }
-    to {
-      height: var(--radix-accordion-content-height);
-    }
+    from { height: 0; }
+    to { height: var(--radix-accordion-content-height); }
   }
   @keyframes accordion-up {
-    from {
-      height: var(--radix-accordion-content-height);
-    }
-    to {
-      height: 0;
-    }
+    from { height: var(--radix-accordion-content-height); }
+    to { height: 0; }
+  }
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
   }
 }
 
 @layer base {
   :root {
-    --background: #ffffff;
-    --foreground: #09090b;
-    --card: #ffffff;
-    --card-foreground: #09090b;
-    --popover: #ffffff;
-    --popover-foreground: #09090b;
-    --primary: #18181b;
-    --primary-foreground: #fafafa;
-    --secondary: #f4f4f5;
-    --secondary-foreground: #18181b;
-    --muted: #f4f4f5;
-    --muted-foreground: #71717a;
-    --accent: #f4f4f5;
-    --accent-foreground: #18181b;
-    --destructive: #ef4444;
-    --destructive-foreground: #fafafa;
-    --border: #e4e4e7;
-    --input: #e4e4e7;
-    --ring: #18181b;
-    --radius: 0.5rem;
+    --background: #F8FAFC;
+    --foreground: #0F172A;
+    --card: #FFFFFF;
+    --card-foreground: #0F172A;
+    --popover: #FFFFFF;
+    --popover-foreground: #0F172A;
+    --primary: #4F46E5;
+    --primary-foreground: #FFFFFF;
+    --secondary: #7C3AED;
+    --secondary-foreground: #FFFFFF;
+    --muted: #F1F5F9;
+    --muted-foreground: #64748B;
+    --accent: #F1F5F9;
+    --accent-foreground: #4F46E5;
+    --destructive: #EF4444;
+    --destructive-foreground: #FFFFFF;
+    --border: #E2E8F0;
+    --input: #E2E8F0;
+    --ring: #4F46E5;
+    --radius: 0.75rem;
   }
 
   .dark {
-    --background: #09090b;
-    --foreground: #fafafa;
-    --card: #09090b;
-    --card-foreground: #fafafa;
-    --popover: #09090b;
-    --popover-foreground: #fafafa;
-    --primary: #fafafa;
-    --primary-foreground: #18181b;
-    --secondary: #27272a;
-    --secondary-foreground: #fafafa;
-    --muted: #27272a;
-    --muted-foreground: #a1a1aa;
-    --accent: #27272a;
-    --accent-foreground: #fafafa;
-    --destructive: #7f1d1d;
-    --destructive-foreground: #fafafa;
-    --border: #27272a;
-    --input: #27272a;
-    --ring: #d4d4d8;
+    --background: #020617;
+    --foreground: #F8FAFC;
+    --card: #0F172A;
+    --card-foreground: #F8FAFC;
+    --popover: #0F172A;
+    --popover-foreground: #F8FAFC;
+    --primary: #6366F1;
+    --primary-foreground: #FFFFFF;
+    --secondary: #8B5CF6;
+    --secondary-foreground: #FFFFFF;
+    --muted: #1E293B;
+    --muted-foreground: #94A3B8;
+    --accent: #1E293B;
+    --accent-foreground: #6366F1;
+    --destructive: #7F1D1D;
+    --destructive-foreground: #FFFFFF;
+    --border: #1E293B;
+    --input: #1E293B;
+    --ring: #6366F1;
   }
 }
 
@@ -115,7 +116,19 @@
   body {
     background-color: var(--background);
     color: var(--foreground);
-    font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+    font-family: var(--font-sans);
     font-feature-settings: "rlig" 1, "calt" 1;
+    -webkit-font-smoothing: antialiased;
   }
+  h1, h2, h3, h4, h5, h6 {
+    letter-spacing: -0.02em;
+  }
+}
+
+.text-gradient {
+  @apply bg-clip-text text-transparent bg-linear-to-r from-indigo-600 to-violet-600;
+}
+
+.dark .text-gradient {
+  @apply from-indigo-400 to-violet-400;
 }

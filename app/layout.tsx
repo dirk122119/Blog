@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, Geist_Mono } from "next/font/google";
+import { Inter, Geist_Mono, Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/ThemeProvider";
 
@@ -7,6 +7,12 @@ const inter = Inter({
   variable: "--font-sans",
   subsets: ["latin"],
   weight: ["400", "500"],
+  display: "swap",
+});
+
+const plusJakarta = Plus_Jakarta_Sans({
+  variable: "--font-jakarta",
+  subsets: ["latin"],
   display: "swap",
 });
 
@@ -28,7 +34,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${inter.variable} ${geistMono.variable} antialiased`}
+        className={`${inter.variable} ${plusJakarta.variable} ${geistMono.variable} antialiased`}
       >
         <ThemeProvider
             attribute="class"

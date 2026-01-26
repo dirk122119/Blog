@@ -1,5 +1,6 @@
-// components/LogoutButton.tsx
 "use client";
+
+import { Button } from "@/components/ui/Button";
 
 export function LogoutButton() {
   const handleLogout = async () => {
@@ -8,11 +9,13 @@ export function LogoutButton() {
   };
 
   return (
-    <button
+    <Button
+      variant="ghost"
+      size="sm"
       onClick={handleLogout}
-      className="rounded-lg bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-red-700"
+      className="text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
     >
       登出
-    </button>
+    </Button>
   );
 }

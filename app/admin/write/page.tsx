@@ -134,6 +134,32 @@ export default function WritePage() {
       if (error) throw error;
 
       setMessage({ type: "success", text: "Article published successfully!" });
+
+      // trigger vercel deploy
+      try {
+        const deployResponse = await fetch('/api/webhooks/vercel-deploy', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            trigger: 'manual',
+            post_slug: slug,
+          }),
+        });
+  
+        if (!deployResponse.ok) {
+          console.error('Failed to trigger deploy:', await deployResponse.text());
+          setMessage({ type: "success", text: "Article published, but rebuild may have failed. Check Vercel dashboard." });
+        } else {
+          const deployData = await deployResponse.json();
+          setMessage({ type: "success", text: "Article published and rebuild triggered!" });
+        }
+      } catch (deployError) {
+        console.error('Error triggering deploy:', deployError);
+        // 不阻擋用戶，文章已經發布成功
+        setMessage({ type: "success", text: "Article published! (Rebuild trigger failed, but post is live)" });
+      }
       
       // Clear tracked images so they aren't deleted
       setUploadedImages([]);

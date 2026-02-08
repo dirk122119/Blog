@@ -5,7 +5,9 @@ import { Background } from "@/components/ui/Background";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import Link from "next/link";
 import { Button } from "@/components/ui/Button";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Pencil, Eye } from "lucide-react";
+import { DeletePostButton } from "@/components/ui/DeletePostButton";
+import { format } from "date-fns";
 
 export const dynamic = 'force-dynamic';
 export default async function AdminPage() {
@@ -18,6 +20,11 @@ export default async function AdminPage() {
   if (!user) {
     redirect("/auth/login");
   }
+
+  const { data: posts } = await supabase
+    .from("posts")
+    .select("id, title, slug, created_at, published, language, tags")
+    .order("created_at", { ascending: false });
 
   return (
     <div className="relative min-h-screen">
@@ -103,7 +110,89 @@ export default async function AdminPage() {
               </div>
             </div>
           </div>
+
+          {/* Stats Card */}
+          <div className="h-full border border-slate-200/60 dark:border-slate-800/60 rounded-lg bg-white/50 dark:bg-slate-950/50 backdrop-blur-sm p-6">
+            <div className="text-[10px] font-bold uppercase tracking-widest text-indigo-600 bg-indigo-50 px-2.5 py-1 rounded-md dark:bg-indigo-950/50 dark:text-indigo-400 mb-4">
+              Stats
+            </div>
+            <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-4">
+              Overview
+            </h3>
+            <div className="space-y-3">
+              <div>
+                <p className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-1">Total Posts</p>
+                <p className="text-3xl font-extrabold text-slate-900 dark:text-white">{posts?.length ?? 0}</p>
+              </div>
+            </div>
+          </div>
         </div>
+
+        {/* Posts Management */}
+        <section className="mt-16">
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-3xl font-[800] tracking-tight text-slate-900 dark:text-white">
+              All Posts
+            </h2>
+          </div>
+
+          {!posts || posts.length === 0 ? (
+            <div className="rounded-lg border border-slate-200/60 dark:border-slate-800/60 bg-white/50 dark:bg-slate-950/50 backdrop-blur-sm p-12 text-center">
+              <p className="text-slate-500 dark:text-slate-400 font-medium">No posts yet. Write your first article!</p>
+            </div>
+          ) : (
+            <div className="space-y-3">
+              {posts.map((post) => (
+                <div
+                  key={post.slug}
+                  className="flex items-center justify-between rounded-lg border border-slate-200/60 dark:border-slate-800/60 bg-white/50 dark:bg-slate-950/50 backdrop-blur-sm p-4 transition-colors hover:border-slate-300 dark:hover:border-slate-700"
+                >
+                  <div className="min-w-0 flex-1">
+                    <div className="flex items-center gap-3 mb-1">
+                      <h3 className="font-bold text-slate-900 dark:text-white truncate">
+                        {post.title}
+                      </h3>
+                      {!post.published && (
+                        <span className="shrink-0 text-[10px] font-bold uppercase tracking-widest text-amber-600 bg-amber-50 px-2 py-0.5 rounded-md dark:bg-amber-950/50 dark:text-amber-400">
+                          Draft
+                        </span>
+                      )}
+                    </div>
+                    <div className="flex items-center gap-3 text-sm text-slate-500 dark:text-slate-400">
+                      <time>{format(new Date(post.created_at), "MMM d, yyyy")}</time>
+                      <span>·</span>
+                      <span className="uppercase text-xs font-bold">{post.language}</span>
+                      {post.tags && post.tags.length > 0 && (
+                        <>
+                          <span>·</span>
+                          <span className="truncate">{post.tags.join(", ")}</span>
+                        </>
+                      )}
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-1 ml-4 shrink-0">
+                    <Link
+                      href={`/preview/${post.slug}`}
+                      className="rounded-md p-2 text-slate-400 hover:bg-slate-100 hover:text-slate-600 dark:hover:bg-slate-800 dark:hover:text-slate-300 transition-colors"
+                      title="Preview post"
+                      target="_blank"
+                    >
+                      <Eye className="h-4 w-4" />
+                    </Link>
+                    <Link
+                      href={`/admin/write/${post.slug}`}
+                      className="rounded-md p-2 text-slate-400 hover:bg-indigo-50 hover:text-indigo-600 dark:hover:bg-indigo-950/50 dark:hover:text-indigo-400 transition-colors"
+                      title="Edit post"
+                    >
+                      <Pencil className="h-4 w-4" />
+                    </Link>
+                    <DeletePostButton slug={post.slug} title={post.title} />
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </section>
       </main>
 
       <footer className="border-t border-slate-200 bg-white/50 dark:border-slate-800 dark:bg-slate-950/50 py-8 mt-20">

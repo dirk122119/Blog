@@ -1,4 +1,4 @@
-import { createClient } from "@/lib/supabase/supabase-build";
+import { createBuildClient } from "@/lib/supabase/supabase-build";
 import { notFound } from "next/navigation";
 import MarkdownContent from "@/components/MarkdownContent";
 import { format } from "date-fns";
@@ -9,9 +9,10 @@ import { Background } from "@/components/ui/Background";
 import { ChevronLeft } from "lucide-react";
 
 export const dynamic = "force-static";
+export const dynamicParams = false;
 
 export async function generateStaticParams() {
-  const supabase = createClient();
+  const supabase = createBuildClient();
   
   const { data: posts } = await supabase
     .from("posts")
@@ -33,7 +34,7 @@ export default async function PostPage(props: PostPageProps) {
   const params = await props.params;
   const { slug } = params;
   
-  const supabase = createClient();
+  const supabase = createBuildClient();
 
   const { data: post } = await supabase
     .from("posts")

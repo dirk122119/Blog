@@ -1,4 +1,4 @@
-import { createClient as createSupabaseClient } from '@supabase/supabase-js'
+import { createClient } from '@supabase/supabase-js'
 
 /**
  * Build-time Supabase client for static generation (SSG).
@@ -15,8 +15,8 @@ import { createClient as createSupabaseClient } from '@supabase/supabase-js'
  *   const { data } = await supabase.from("posts").select("slug")
  * }
  */
-export function createClient() {
-  return createSupabaseClient(
+export function createBuildClient() {
+  return createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!
   )

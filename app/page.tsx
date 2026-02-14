@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { createClient } from "@/lib/supabase/supabase-build";
+import { createBuildClient } from "@/lib/supabase/supabase-build";
 import { format } from "date-fns";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/Card";
 import { ThemeToggle } from "@/components/ThemeToggle";
@@ -11,7 +11,7 @@ import { ArrowRight } from "lucide-react";
 export const dynamic = "force-static";
 
 export default async function Home() {
-  const supabase = createClient();
+  const supabase = createBuildClient();
 
   const { data: posts } = await supabase
     .from("posts")

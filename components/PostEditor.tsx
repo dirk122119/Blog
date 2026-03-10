@@ -54,7 +54,11 @@ export default function PostEditor({ mode, initialData }: PostEditorProps) {
         return;
       }
       try {
-        await supabase.storage.from("images").remove(uploadedImages);
+        await fetch("/api/r2/delete", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ keys: uploadedImages }),
+        });
       } catch (err) {
         console.error("Failed to clean up images", err);
       }
@@ -62,7 +66,7 @@ export default function PostEditor({ mode, initialData }: PostEditorProps) {
     router.back();
   };
 
-  const onPaste = async (event:React.ClipboardEvent) => {
+  const onPaste = async (event: React.ClipboardEvent) => {
     const dataTransfer = event.clipboardData;
     if (!dataTransfer) return;
 
@@ -74,27 +78,26 @@ export default function PostEditor({ mode, initialData }: PostEditorProps) {
       setMessage({ type: "success", text: "Uploading image..." });
 
       try {
-        const fileExt = file.name.split(".").pop();
-        const fileName = `${Date.now()}-${Math.random().toString(36).substring(2)}.${fileExt}`;
-        const filePath = `${fileName}`;
+        const formData = new FormData();
+        formData.set("file", file);
+        const res = await fetch("/api/r2/upload", {
+          method: "POST",
+          body: formData,
+        });
+        if (!res.ok) {
+          const err = await res.json().catch(() => ({}));
+          throw new Error(err.error || res.statusText);
+        }
+        const { url, key } = await res.json();
 
-        const { error: uploadError } = await supabase.storage
-          .from("images")
-          .upload(filePath, file);
+        setUploadedImages((prev) => [...prev, key]);
 
-        if (uploadError) throw uploadError;
-
-        const {
-          data: { publicUrl },
-        } = supabase.storage.from("images").getPublicUrl(filePath);
-
-        setUploadedImages((prev) => [...prev, filePath]);
-
-        const imageMarkdown = `![image](${publicUrl})`;
+        const imageMarkdown = `![image](${url})`;
         setContent((prev) => (prev ? `${prev}\n${imageMarkdown}` : imageMarkdown));
         setMessage(null);
-      } catch (error: any) {
-        setMessage({ type: "error", text: `Image upload failed: ${error.message}` });
+      } catch (error: unknown) {
+        const msg = error instanceof Error ? error.message : "Upload failed";
+        setMessage({ type: "error", text: `Image upload failed: ${msg}` });
       }
     }
   };
@@ -388,8 +391,15 @@ export default function PostEditor({ mode, initialData }: PostEditorProps) {
                   className="rounded-lg border border-slate-200/60 dark:border-slate-800/60 bg-white/50 dark:bg-slate-950/50 backdrop-blur-sm font-sans overflow-hidden"
                   data-color-mode="light"
                 >
-                  <div className="p-1">
-                    <MDEditor value={content} onChange={(val) => setContent(val || "")} onPaste={onPaste} />
+                  <div className="p-1 h-auto">
+                    <MDEditor
+                      value={content}
+                      onChange={(val) => setContent(val || "")}
+                      onPaste={onPaste}
+                      preview="live"
+                      height={520}
+                      visibleDragbar={true}
+                    />
                   </div>
                 </div>
               )}

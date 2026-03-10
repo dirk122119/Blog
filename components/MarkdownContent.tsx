@@ -68,10 +68,10 @@ export default function MarkdownContent({ content }: MarkdownContentProps) {
             <hr className="my-20 border-slate-200 dark:border-slate-800" {...props} />
           ),
           img: ({ node, ...props }) => (
-            <div className="my-12">
+            <span className="my-12 block">
               <img className="rounded-2xl border border-slate-200 shadow-xl dark:border-slate-800 w-full object-cover" {...props} alt={props.alt || ''} />
               {props.alt && <span className="block mt-4 text-center text-sm font-bold text-slate-400 uppercase tracking-widest">{props.alt}</span>}
-            </div>
+            </span>
           ),
         }}
       >

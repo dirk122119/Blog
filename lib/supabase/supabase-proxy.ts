@@ -30,10 +30,8 @@ export async function updateSession(request: NextRequest) {
   );
 
   // 刷新 session
-  const { data } = await supabase.auth.getClaims();
+  const { data } = await supabase.auth.getUser();
 
-  const user = data?.claims
-
-  return { supabaseResponse, user };
+  return { supabaseResponse, user: data?.user, supabase };
 }
 

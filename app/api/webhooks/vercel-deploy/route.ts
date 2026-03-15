@@ -14,13 +14,16 @@ export async function POST(request: Request) {
 
     console.log('✅ User authenticated:', user.email);
 
-    // 2. 可選：檢查是否為 admin（如果有 role 系統）
-    // 如果沒有 role 系統，可以跳過這步
-    // const userRole = user.app_metadata?.role;
-    // if (userRole !== 'admin') {
-    //   console.error('Forbidden: User is not admin');
-    //   return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
-    // }
+    // 2. 檢查 role（從 profiles 查，不用 Custom Access Token hook）
+    const { data: profile } = await supabase
+      .from('profiles')
+      .select('role')
+      .eq('user_id', user.id)
+      .single();
+    if (profile?.role !== 'admin') {
+      console.error('Forbidden: User is not admin');
+      return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+    }
 
     // 3. 觸發 Vercel Deploy Hook
     const vercelDeployHook = process.env.VERCEL_DEPLOY_HOOK_URL;
